@@ -105,7 +105,7 @@ IF EXIST "%DEPLOYMENT_SOURCE%\typings.json" (
 )
 
 :: 3. Install webpack and rimraf cli globally
-IF EXIST "%DEPLOYMENT_SOURCE%\webpack.config.json" (
+IF EXIST "%DEPLOYMENT_SOURCE%\webpack.config.js" (
   echo Install webpack and rimraf cli globally
   pushd "%DEPLOYMENT_SOURCE%"
   call :ExecuteCmd !NPM_CMD! install rimraf webpack -g
