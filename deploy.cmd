@@ -111,13 +111,11 @@ IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
 :: 4. Install npm packages
-IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
-  echo Install npm packages
-  pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd !NPM_CMD! install
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
-)
+echo Install npm packages
+pushd "%DEPLOYMENT_TARGET%"
+call :ExecuteCmd !NPM_CMD! install
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
 
 :: 5. Build
 echo Build
