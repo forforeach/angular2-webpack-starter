@@ -96,22 +96,19 @@ echo Handling node.js deployment.
 call :SelectNodeVersion
 
 :: 2. Install typings cli globally
-IF EXIST "%DEPLOYMENT_TARGET%\typings.json" (
-  echo Install typings cli globally
-  pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd !NPM_CMD! install typings -g
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
-)
+
+echo Install typings cli globally
+pushd "%DEPLOYMENT_TARGET%"
+call :ExecuteCmd !NPM_CMD! install typings -g
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
 
 :: 3. Install webpack and rimraf cli globally
-IF EXIST "%DEPLOYMENT_TARGET%\webpack.config.json" (
-  echo Install webpack and rimraf cli globally
-  pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd !NPM_CMD! install rimraf webpack -g
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
-)
+echo Install webpack and rimraf cli globally
+pushd "%DEPLOYMENT_TARGET%"
+call :ExecuteCmd !NPM_CMD! install rimraf webpack -g
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
 
 :: 4. Install npm packages
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
@@ -123,17 +120,15 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
 )
 
 :: 5. Build
-IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
-  echo Build
-  pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd !NPM_CMD! run build:prod
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
-)
+echo Build
+pushd "%DEPLOYMENT_TARGET%"
+call :ExecuteCmd !NPM_CMD! run build:prod
+IF !ERRORLEVEL! NEQ 0 goto error
+popd
 
 :: 5. KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  echo KuduSync
+  echo Running KuduSync
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DIST_FOLDER%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
